@@ -52,6 +52,12 @@ class ConsoleRender:
                 self._process_input(render)
                 self._force_initial_column()
         except errors.EndOfInput as e:
+            self._relocate()
+            self._print_status_bar(render)
+
+            self._print_header(render)
+            self._print_hint(render)
+            self._print_options(render)
             self._go_to_end(render)
             return e.selection
 
