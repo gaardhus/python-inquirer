@@ -13,6 +13,7 @@ class Checkbox(BaseConsoleRender):
         self.locked = self.question.locked or []
         self.selection = [k for (k, v) in enumerate(self.question.choices) if v in self.default_choices()]
         self.current = 0
+        self.submitted = False
 
     def get_hint(self):
         try:
@@ -65,7 +66,9 @@ class Checkbox(BaseConsoleRender):
 
             selector = " "
             end_index = ending_milestone + index - half_options - 1
-            if (
+            if self.submitted:
+                pass
+            elif (
                 (is_in_middle and index == half_options)
                 or (is_in_beginning and index == self.current)
                 or (is_in_end and end_index == self.current)
@@ -122,6 +125,7 @@ class Checkbox(BaseConsoleRender):
             for x in self.selection:
                 value = self.question.choices[x]
                 result.append(getattr(value, "value", value))
+            self.submitted = True
             raise errors.EndOfInput(result)
         elif pressed == key.CTRL_C:
             raise KeyboardInterrupt()
